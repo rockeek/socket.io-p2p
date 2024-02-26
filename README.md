@@ -9,20 +9,20 @@ Socket.IO is used to transport [signalling data](http://www.html5rocks.com/en/tu
 Create a socket connection, pass it to `P2P`. On the Client:
 
 ```js
-var P2P = require('socket.io-p2p');
-var io = require('socket.io-client');
+var P2P = require("socket.io-p2p");
+var io = require("socket.io-client");
 var socket = io();
 
 var p2p = new P2P(socket);
 
-p2p.on('ready', function(){
+p2p.on("ready", function () {
   p2p.usePeerConnection = true;
-  p2p.emit('peer-obj', { peerId: peerId });
-})
+  p2p.emit("peer-obj", { peerId: peerId });
+});
 
 // this event will be triggered over the socket transport
 // until `usePeerConnection` is set to `true`
-p2p.on('peer-msg', function(data){
+p2p.on("peer-msg", function (data) {
   console.log(data);
 });
 ```
@@ -32,9 +32,9 @@ If you're not using browserify, then use the included standalone file `socketiop
 On the server, use the [socket.io-p2p-server](https://github.com/tomcartwrightuk/socket.io-p2p-server) to take care of signalling. All clients who support WebRTC data connections will exchange signalling data via the default `/` namespace.
 
 ```js
-var server = require('http').createServer();
-var io = require('socket.io')(server);
-var p2p = require('socket.io-p2p-server').Server;
+var server = require("http").createServer();
+var io = require("socket.io")(server);
+var p2p = require("socket.io-p2p-server").Server;
 io.use(p2p);
 server.listen(3030);
 ```
@@ -42,12 +42,12 @@ server.listen(3030);
 WebRTC Peer connections can also be established by exchanging signalling data within a socket.io room. Do this by calling the `p2p` server within the `connection` callback:
 
 ```js
-var server = require('http').createServer();
-var io = require('socket.io')(server);
-var p2p = require('socket.io-p2p-server').Server;
+var server = require("http").createServer();
+var io = require("socket.io")(server);
+var p2p = require("socket.io-p2p-server").Server;
 server.listen(3030);
 
-io.on('connection', function(socket){
+io.on("connection", function (socket) {
   clients[socket.id] = socket;
   socket.join(roomName);
   p2p(socket, null, room);
